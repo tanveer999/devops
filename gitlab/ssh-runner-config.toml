@@ -1,0 +1,23 @@
+concurrent = 1
+check_interval = 0
+shutdown_timeout = 0
+
+[session_server]
+  session_timeout = 1800
+
+[[runners]]
+  name = "my-runner"
+  url = "https://gitlab.com/"
+  id = 123456
+  token = <runner_registration_token>
+  token_obtained_at = 2023-07-31T05:16:25Z
+  token_expires_at = 0001-01-01T00:00:00Z
+  executor = "ssh"
+  [runners.cache]
+    MaxUploadedArchiveSize = 0
+  [runners.ssh]
+    user = <username>
+    host = <ip_address>
+    port = "22"
+    identity_file = <private-key-file>
+    disable_strict_host_key_checking = true
