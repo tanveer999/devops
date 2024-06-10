@@ -1,0 +1,41 @@
+---
+- name: Install packages
+  hosts: localhost
+  gather_facts: no # don't fetch host data
+  connection: local
+  tasks:
+    - name: "Install openjdk-11 and maven"
+      apt:
+        pkg:
+          - openjdk-11-jdk
+          - maven
+        state: present # state: absent to uninstall the package
+        update_cache: yes
+
+    - name: "Check installed java version"
+      command: java --version
+      register: java_version
+
+    - debug:
+        var: java_version.stdout_lines
+
+    - name: "Check installed maven version"
+      command: mvn --version
+      register: mvn_version
+      
+    - debug:
+        var: mvn_version.stdout_lines
+    
+    - name: "Install curl"
+      apt: name=curl state=present
+    
+    - name: "Install minikube"
+      apt:
+        deb: https://storage.googleapis.com/minikube/releases/latest/minikube_latest_amd64.deb
+        state: present # deb only supports state=present
+    
+    - name: "Install terraform"
+      include_tasks: install_terraform.yaml
+    
+    - name: "Install helm"
+      include_tasks: install_helm.yaml

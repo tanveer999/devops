@@ -1,0 +1,48 @@
+---
+- name: Install packages
+  hosts: localhost
+  gather_facts: yes
+  connection: local
+  tasks:
+
+  # - name: "apt clean"
+  #   ansible.builtin.apt:
+  #     clean: yes
+  # - name: wait for apt lock
+  #   shell: while fuser /var/lib/dpkg/lock >/dev/null 2>&1; do sleep 5; done;
+  #   become: yes
+
+  - name: "update apt cache i.e sudo apt update"
+    ansible.builtin.apt:
+      update_cache: yes
+    become: yes
+  
+  - name: "installing tree"
+    ansible.builtin.apt:
+      name: tree
+      state: present
+    become: yes
+
+  - name: "installin stow"
+    ansible.builtin.apt:
+      name: stow
+      state: present
+    become: yes
+
+  
+
+  - name: "install virtualbox, vagrant"
+    ansible.builtin.apt:
+      pkg:
+      # - virtualbox ## installed manually using .deb
+      # - virtualbox-dkms
+      # - linux-headers-generic
+      - vagrant
+      state: present
+    become: yes
+
+  - name: "check virtualbox installation"
+    command: vboxmanage --version
+
+  - name: "check vagrant installation"
+    command: vagrant --version

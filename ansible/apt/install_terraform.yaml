@@ -1,0 +1,23 @@
+---
+
+- name: "Install dependencies"
+  apt:
+    pkg:
+      - software-properties-common
+    state: present
+
+- name: "Add the HashiCorp GPG key"
+  apt_key:
+    url: https://apt.releases.hashicorp.com/gpg
+    state: present
+
+- name: "Add the HashiCorp Linux repository"
+  apt_repository:
+    repo: deb https://apt.releases.hashicorp.com focal main
+    state: present
+
+- name: "Install terraform"
+  apt:
+    name: terraform
+    state: present
+    update_cache: yes

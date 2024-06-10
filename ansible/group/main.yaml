@@ -1,0 +1,20 @@
+---
+- name: "Create group in Ubuntu"
+  hosts: localhost
+  gather_facts: no
+  connection: local
+  vars:
+    user_name: tanveer
+  tasks:
+    - name: "Create Docker group"
+      group:
+        name: docker
+        state: present
+      register: group_output
+    - debug:  
+        var: group_output
+    - name: "Add user {{ user_name }} to docker group"
+      user:
+        name: "{{ user_name }}"
+        groups: docker
+        append: yes

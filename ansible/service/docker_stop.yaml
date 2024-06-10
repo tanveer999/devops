@@ -1,0 +1,10 @@
+---
+- name: "Start Services"
+  hosts: localhost
+  gather_facts: no
+  connection: local
+  tasks:
+    - name: "Start docker Services"
+      service:
+        name: docker
+        state: stopped

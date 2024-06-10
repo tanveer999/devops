@@ -1,0 +1,23 @@
+---
+- name: "loop in ansible"
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  vars:
+    group_name: demo
+
+  tasks:  
+    - name: "Create demo group"
+      group: 
+          name: '{{ group_name }}'
+          state: absent
+
+    - name: "Adding user to demo group"
+      user:
+        name: '{{ item }}'
+        state: absent
+        groups: '{{ group_name }}'
+      loop:
+        - user1
+        - user2
+        - user3

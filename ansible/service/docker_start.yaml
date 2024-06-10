@@ -1,0 +1,11 @@
+---
+- name: "Start Services"
+  hosts: localhost
+  gather_facts: no
+  connection: local
+  tasks:
+    - name: "Start docker Services"
+      service:
+        name: docker
+        state: started
+        enabled: no # whether the service should start on boot

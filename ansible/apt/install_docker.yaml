@@ -1,0 +1,38 @@
+---
+- name: "Installing Docker in Ubuntu 20.04"
+  hosts: localhost
+  gather_facts: no
+  connection: local
+  become: yes
+  tasks:
+    - name: "Install dependencies"
+      apt:
+        pkg:
+          - ca-certificates
+          - gnupg
+          - lsb-release
+
+    - name: "Adding GPG key"
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: "Adding docker repository to apt"
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu focal stable
+        state: present
+
+    - name: "Installing docker components"
+      apt:
+        pkg:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+        update_cache: yes
+
+    - name: "Installing docker-compose"
+      apt:
+        name: docker-compose
+        state: present
+
+# to start docker run docker_start.yaml playbook in service directory
