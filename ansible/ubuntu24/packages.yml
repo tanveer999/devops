@@ -23,13 +23,48 @@
       state: present
     become: yes
 
-  - name: "installin stow"
+  - name: "installing stow"
     ansible.builtin.apt:
       name: stow
       state: present
     become: yes
-
   
+  - name: "installing xclip"
+    apt:
+      name: xclip
+      state: absent
+    become: yes
+
+  - name: "installing xsel"
+    apt:
+      name: xsel
+      state: present
+    become: yes
+
+  - name: "install bat"
+    apt:
+      name: bat
+      state: present
+    become: yes
+
+  - name: "Set flatpack remote url"
+    flatpak_remote:
+      name: flathub
+      state: present
+      enabled: true
+      flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+        #    register: flatpak_remote_url_result
+    tags:
+      - flatpak
+
+  - name: "Install wezterm with flatpak"
+    community.general.flatpak:
+      name: org.wezfurlong.wezterm
+      remote: flathub
+      state: absent
+    become: yes
+    tags:
+      - flatpak
 
   - name: "install virtualbox, vagrant"
     ansible.builtin.apt:
