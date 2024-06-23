@@ -1,0 +1,7 @@
+- name: write hostname
+  hosts: all
+  tasks:
+  - name: write hostname using jinja2
+    template:
+      src: templates/test.j2
+      dest: /tmp/hostname

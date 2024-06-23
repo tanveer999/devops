@@ -81,3 +81,24 @@
 
   - name: "check vagrant installation"
     command: vagrant --version
+  
+  - name: "check node --version"
+    command: node --version
+    register: node_version
+    tags:
+      - npm
+  
+  - name: "node version"
+    debug:
+      msg: "Current node version: {{ node_version.stdout }}" 
+    tags:
+      - npm
+  
+  - name: "Install tldr"
+    community.general.npm:
+      name: tldr
+      global: true
+      state: present
+    when: node_version.stdout == "v20.13.1"
+    tags:
+      - npm
