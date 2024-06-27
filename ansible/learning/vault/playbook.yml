@@ -1,0 +1,19 @@
+---
+- name: Learning ansible-vault
+  hosts: all
+  gather_facts: yes
+  tasks:
+    - name: Home directory
+      debug:
+        msg: "{{ ansible_env.HOME  }}"
+
+    - name: Check if temp directory exists
+      file:
+        path: "{{ ansible_env.HOME }}/temp"
+        state: directory
+
+    - name: Copy vault encrypted file
+      copy:
+        src: info.txt
+        dest: "{{ ansible_env.HOME }}/temp/info.txt"
+

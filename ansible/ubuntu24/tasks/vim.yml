@@ -1,0 +1,15 @@
+- name: "Create a directory for vim plug"
+  file:
+    path: ~/.vim/autoload
+    state: directory
+    mode: '0755'
+  tags:
+    - vim
+
+- name: "Download vim plug"
+  get_url:
+    url: https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    dest: ~/.vim/autoload/plug.vim
+    mode: '0644' 
+  tags:
+    - vim

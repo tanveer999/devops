@@ -1,0 +1,18 @@
+- name: "Set flatpack remote url"
+  flatpak_remote:
+    name: flathub
+    state: present
+    enabled: true
+    flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+      #    register: flatpak_remote_url_result
+  tags:
+    - flatpak
+
+- name: "Install wezterm with flatpak"
+  community.general.flatpak:
+    name: org.wezfurlong.wezterm
+    remote: flathub
+    state: absent
+  become: yes
+  tags:
+    - flatpak
