@@ -16,3 +16,30 @@
   become: yes
   tags:
     - flatpak
+
+- name: "Install obsidian"
+  community.general.flatpak:
+    name: md.obsidian.Obsidian
+    remote: flathub
+    state: present 
+  become: yes
+  tags:
+    - flatpak
+
+- name: "Install GIMP"
+  community.general.flatpak:
+    name: org.gimp.GIMP
+    remote: flathub
+    state: absent
+  become: yes
+  tags:
+    - flatpak
+
+- name: "Install telegram"
+  community.general.flatpak:
+    name: org.telegram.desktop
+    remote: flathub
+    state: absent
+  become: yes
+  tags:
+    - flatpak

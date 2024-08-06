@@ -1,0 +1,43 @@
+---
+# tasks file for docker
+
+- name: Uninstall older versions of docker
+  ansible.builtin.package:
+    name: "{{ docker_obsolete_packages }}"
+    state: absent
+  
+- name: Ensure dependencies are installed
+  ansible.builtin.apt:
+    name:
+      - ca-certificates
+      - curl
+    state: present
+  when: docker_add_repo | bool  # ensure docker_add_repo is bool, jinja2 filter converts the value to bool
+
+- name: Ensure /etc/apt/keyrings directory exists
+  file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: '0755'
+
+- name: Ensure gpg key is present
+  get_url:
+    url: "{{ docker_apt_gpg_key }}"
+    dest: /etc/apt/keyrings/docker.asc
+    mode: '0644'
+    force: false
+    checksum: "{{ docker_apt_gpg_key_checksum | default(omit) }}" # omit if no checksum found
+  register: add_repository_key
+  when: docker_add_repo | bool
+
+- name: Echo docker repository
+  debug:
+    msg: "{{ docker_apt_repository }}"
+
+- name: Add docker add_repository
+  apt_repository:
+    repo: "{{ docker_apt_repository }}"
+    state: present
+    filename: "{{ docker_apt_filename }}"
+    update_cache: true
+  when: docker_add_repo | bool

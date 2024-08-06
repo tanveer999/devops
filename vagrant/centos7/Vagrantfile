@@ -1,0 +1,21 @@
+
+Vagrant.configure("2") do |config|
+
+  config.vm.box = "centos/7"
+  config.vm.hostname = "vm-centos7"
+  config.vm.network "private_network", ip: "192.168.56.25"
+  
+  config.vm.provider "virtualbox" do |vb|
+    vb.gui = false
+    vb.memory = "2048"
+    vb.cpus = "2"
+    vb.name = "vm-centos7"
+  end
+
+  config.vm.provision "file", source: "~/.ssh/vagrant-key.pub", destination: "~/.ssh/vagrant-key.pub"
+
+  config.vm.provision "shell", inline: <<-EOF
+    cat /home/vagrant/.ssh/vagrant-key.pub >> /home/vagrant/.ssh/authorized_keys
+  EOF
+
+end

@@ -6,10 +6,14 @@
   tasks:
     - name: "Installing apt packages"
       ansible.builtin.include_tasks: tasks/apt.yml
+      tags:
+        - apt
 
     - name: "Installing flatpak packages"
       ansible.builtin.include_tasks: 
         file: tasks/flatpak.yml
+      tags:
+        - flatpak
 
     - name: "Installing npm packages"
       ansible.builtin.include_tasks:

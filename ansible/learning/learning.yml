@@ -1,0 +1,23 @@
+---
+- name: "Learning"
+  hosts: all
+  tasks:
+    - name: "ansible_distribution"
+      debug:
+        msg: "{{ ansible_distribution }}"
+
+    - name: "ansible_distribution_release"
+      debug:
+        msg: "{{ ansible_distribution_release }}"
+
+    - name: "ansible_os_family"
+      ansible.builtin.debug:
+        msg: "{{ ansible_os_family }}"
+
+    - name: "ansible_env.USER"
+      ansible.builtin.debug:
+        msg: "{{ ansible_env.USER }}"
+
+    - name: "ansible_env"
+      ansible.builtin.debug:
+        msg: "{{ ansible_env }}"

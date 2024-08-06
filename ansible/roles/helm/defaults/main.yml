@@ -1,0 +1,9 @@
+---
+# defaults file for helm
+# Enable repo setup
+helm_add_repo: true
+helm_apt_gpg_key: https://baltocdn.com/helm/signing.asc
+helm_apt_arch: amd64
+helm_apt_repository: "deb [arch={{ helm_apt_arch }} signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main"
+helm_apt_filename: helm-stable-debian
+helm_package_state: present

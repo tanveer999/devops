@@ -1,0 +1,9 @@
+---
+# tasks file for helm
+- ansible.builtin.include_tasks: setup-debian.yml
+  when: ansible_os_family == 'Debian'
+
+- name: Install Helm packages
+  ansible.builtin.package:
+    name: helm
+    state: "{{ helm_package_state }}"

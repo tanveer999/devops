@@ -1,0 +1,35 @@
+- name: Ensure dependencies are installed
+  ansible.builtin.apt:
+    name:
+      - apt-transport-https
+    state: present
+  when: helm_add_repo | bool  # ensure helm_add_repo is bool, jinja2 filter converts the value to bool
+
+- name: Ensure /usr/share/keyrings directory exists
+  file:
+    path: /usr/share/keyrings
+    state: directory
+    mode: '0755'
+
+- name: Ensure gpg key is present
+  get_url:
+    url: "{{ helm_apt_gpg_key }}"
+    dest: /usr/share/keyrings/helm.gpg
+    mode: '0644'
+    force: true
+  register: add_repository_key
+  when: helm_add_repo | bool
+
+- name: helm apt repository
+  ansible.builtin.debug:
+    msg: helm apt repository {{ helm_apt_repository }}
+
+
+# TODO: some error in below
+- name: Add helm repository
+  apt_repository:
+    repo: "{{ helm_apt_repository }}"
+    state: present
+    filename: "{{ helm_apt_filename }}"
+    update_cache: true
+  when: helm_add_repo | bool

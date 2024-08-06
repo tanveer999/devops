@@ -9,61 +9,41 @@
   ansible.builtin.apt:
     update_cache: yes
   become: yes
-  tags:
-    - apt
 
 - name: "Installing apt packages"
   ansible.builtin.apt:
     name: 
       - tree
+      - "gir1.2-gtop-2.0"
+      - "gir1.2-clutter-1.0"
+      - stow
+        #- rclone
+      - xclip
+      - bat
+      - vagrant
+      - flameshot
+      - pcscd
+      - libfuse2t64 
     state: present
   become: yes
+
+    #- name: "rclone version"
+    #command: rclone --version
 
 - name: "Removing apt packages"
   apt:
     name:
       - sysfsutils
+      - syncthing
+      - xsel
+      - rclone
     state: absent
-  become: yes
-
-- name: "installing stow"
-  ansible.builtin.apt:
-    name: stow
-    state: present
-  become: yes
-
-- name: "installing xclip"
-  apt:
-    name: xclip
-    state: absent
-  become: yes
-
-- name: "installing xsel"
-  apt:
-    name: xsel
-    state: present
-  become: yes
-
-- name: "install bat"
-  apt:
-    name: bat
-    state: present
   become: yes
 
 #    - name: "Install bitwarden"
 #      apt:
 #        deb: "https://vault.bitwarden.com/download/?app=desktop&platform=linux&variant=deb"
 #      become: yes
-
-- name: "install virtualbox, vagrant"
-  ansible.builtin.apt:
-    pkg:
-      # - virtualbox ## installed manually using .deb
-      # - virtualbox-dkms
-      # - linux-headers-generic
-      - vagrant
-    state: present
-  become: yes
 
 - name: "check virtualbox installation"
   command: vboxmanage --version
