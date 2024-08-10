@@ -1,6 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: first-cm
+  name: {{ .Release.Name }}-cm
 data:
   msg: "First chart"
+  drink: {{ .Values.drink }}
