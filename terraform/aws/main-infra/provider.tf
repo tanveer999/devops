@@ -9,4 +9,10 @@ terraform {
 
 provider "aws" {
   # Configuration options
+  region = "ap-south-1"
+  default_tags {
+    tags = {
+      managed_by = "terraform"
+    }
+  }
 }

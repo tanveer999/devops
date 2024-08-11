@@ -12,29 +12,29 @@
 
 ## get latest ecs ami id
 
-data "aws_ami" "example" {
-  most_recent      = true
+# data "aws_ami" "example" {
+#   most_recent      = true
 
-  filter {
-    name   = "name"
-    values = ["amzn2-ami-ecs-hvm-2.0.*-x86_64-ebs"]
-  }
+#   filter {
+#     name   = "name"
+#     values = ["amzn2-ami-ecs-hvm-2.0.*-x86_64-ebs"]
+#   }
 
-  filter {
-    name   = "root-device-type"
-    values = ["ebs"]
-  }
+#   filter {
+#     name   = "root-device-type"
+#     values = ["ebs"]
+#   }
 
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-}
+#   filter {
+#     name   = "virtualization-type"
+#     values = ["hvm"]
+#   }
+# }
 
-output "ecs-image-id" {
-  value = data.aws_ami.example.image_id
-}
+# output "ecs-image-id" {
+#   value = data.aws_ami.example.image_id
+# }
 
-output "ecs-ami-name" {
-  value = data.aws_ami.example.name
-}
+# output "ecs-ami-name" {
+#   value = data.aws_ami.example.name
+# }
