@@ -1,0 +1,11 @@
+services:
+  conductor-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # container_name: conductor-worker
+    image: conductorworker-helloworld:latest
+    network_mode: host
+    restart: no 
+    deploy:
+      replicas: 2

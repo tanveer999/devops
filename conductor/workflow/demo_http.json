@@ -1,0 +1,47 @@
+{
+    "createTime": 1723362745398,
+    "updateTime": 1723370690461,
+    "name": "demo_http",
+    "description": "Edit or extend this sample workflow. Set the workflow name to get started",
+    "version": 11,
+    "tasks": [
+        {
+            "name": "call_rest_api",
+            "taskReferenceName": "orkes_test_api",
+            "inputParameters": {
+                "http_request": {
+                    "uri": "https://orkes-api-tester.orkesconductor.com/api",
+                    "method": "GET",
+                    "connectionTimeOut": 15000,
+                    "readTimeOut": 15000
+                }
+            },
+            "type": "HTTP",
+            "decisionCases": {},
+            "defaultCase": [],
+            "forkTasks": [],
+            "startDelay": 0,
+            "joinOn": [],
+            "optional": false,
+            "defaultExclusiveJoinTask": [],
+            "asyncComplete": false,
+            "loopOver": [],
+            "onStateChange": {},
+            "permissive": false
+        }
+    ],
+    "inputParameters": [],
+    "outputParameters": {
+        "data": "${orkes_test_api.output.response.body.data}",
+        "source": "${orkes_test_api.output.response.body.source}"
+    },
+    "schemaVersion": 2,
+    "restartable": true,
+    "workflowStatusListenerEnabled": false,
+    "ownerEmail": "example@email.com",
+    "timeoutPolicy": "ALERT_ONLY",
+    "timeoutSeconds": 0,
+    "variables": {},
+    "inputTemplate": {},
+    "enforceSchema": true
+}
