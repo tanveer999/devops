@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "conductor.fullName" . }}-redis
+  labels:
+    app: {{ include "conductor.name" . }}
+spec:
+  replicas: {{ .Values.redis.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "conductor.name" . }}
+      component: redis
+  template:
+    metadata:
+      labels:
+        app: {{ include "conductor.name" . }}
+        component: redis
+    spec:
+      containers:
+      - name: redis
+        image: "{{ .Values.redis.image.repository }}:{{ .Values.redis.image.tag }}"
+        ports:
+        - containerPort: 6379
+        volumeMounts:
+        - mountPath: /usr/local/etc/redis/redis.conf
+          subPath: redis.conf
+          name: redis-config
+        livenessProbe:
+          exec:
+            command:
+            - redis-cli
+            - ping
+          initialDelaySeconds: 30
+          periodSeconds: 10
+      volumes:
+      - name: redis-config
+        hostPath: 
+            path: /configs
+            type: Directory

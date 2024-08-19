@@ -1,4 +1,4 @@
-1. enable site command 
+# enable site command 
     ```
         a2ensite <name of site to enable>
     ```
@@ -8,19 +8,30 @@
         a2ensite example1.net
     ```
 
-2. disable sites
+# disable sites
 
     ```
         a2dissite <name of site to disable>
     ```
 
-3. enable modules
+# enable modules
 
     ```
         a2enmod
     ```
 
-4. test apache config files
+# test apache config files
     ```
     apachectl configtest
     ```
+
+# list enabled modules
+```
+apachectl -M
+```
+
+# Status module
+## Enabling
+```
+a2enmod status
+```

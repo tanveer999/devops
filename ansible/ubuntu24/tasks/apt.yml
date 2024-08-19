@@ -23,7 +23,8 @@
       - vagrant
       - flameshot
       - pcscd
-      - libfuse2t64 
+      - libfuse2t64
+        #- conky-all
     state: present
   become: yes
 
@@ -37,6 +38,7 @@
       - syncthing
       - xsel
       - rclone
+      - conky-all
     state: absent
   become: yes
 

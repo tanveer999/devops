@@ -1,0 +1,40 @@
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: {{ include "conductor.fullName" . }}-deploy
+#   namespace: {{ .Values.namespace }}
+#   labels:
+#     app: {{ include "conductor.name" . }}
+# spec:
+#   replicas: {{ .Values.conductorServer.replicaCount }}
+#   selector:
+#     matchLabels:
+#       app: {{ include "conductor.name" . }}
+#       component: server
+#   template:
+#     metadata:
+#       labels:
+#         app: {{ include "conductor.name" . }}
+#         component: server
+#     spec:
+#       containers:
+#       - name: conductor-server
+#         image: "{{ .Values.conductorServer.image.repository }}:{{ .Values.conductorServer.image.tag }}"
+#         env:
+#         - name: CONFIG_PROP
+#           value: {{ .Values.conductorServer.configProp }}
+#         ports:
+#         - containerPort: 8080
+#         - containerPort: 5000
+#         readinessProbe:
+#           httpGet:
+#             path: /health
+#             port: 8080
+#           initialDelaySeconds: 30
+#           periodSeconds: 60
+#         livenessProbe:
+#           httpGet:
+#             path: /health
+#             port: 8080
+#           initialDelaySeconds: 60
+#           periodSeconds: 60

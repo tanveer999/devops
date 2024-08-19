@@ -1,0 +1,14 @@
+namespace: conductor
+
+conductorServer:
+  replicaCount: 1
+  image:
+    repository:
+    tag:
+  configProp: config-redis.properties
+
+redis:
+  replicaCount: 1
+  image:
+    repository: redis
+    tag: 6.2.3-alpine
