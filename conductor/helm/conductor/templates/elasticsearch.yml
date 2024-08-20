@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "conductor.fullName" . }}-elasticsearch
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ include "conductor.name" . }}
+spec:
+  replicas: {{ .Values.elasticsearch.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "conductor.name" . }}
+      component: elasticsearch
+  template:
+    metadata:
+      labels:
+        app: {{ include "conductor.name" . }}
+        component: elasticsearch
+    spec:
+      containers:
+      - name: elasticsearch
+        image: "{{ .Values.elasticsearch.image.repository }}:{{ .Values.elasticsearch.image.tag }}"
+        env:
+        - name: ES_JAVA_OPTS
+          value: "{{ .Values.elasticsearch.javaOpts }}"
+        - name: xpack.security.enabled
+          value: "false"
+        - name: discovery.type
+          value: "single-node"
+        ports:
+        - containerPort: 9200
+        # volumeMounts:
+        # - mountPath: /usr/share/elasticsearch/data
+        #   name: esdata-conductor
+        livenessProbe:
+          exec:
+            command:
+            - curl
+            - http://localhost:9200/_cluster/health
+            - -o
+            - /dev/null
+          initialDelaySeconds: 10
+          periodSeconds: 5
+    #   volumes:
+    #   - name: esdata-conductor
+    #     persistentVolumeClaim:
+    #       claimName: esdata-conductor-pvc
+
+---
+
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: {{ include "conductor.fullName" . }}-elasticsearch
+# spec:
+#   selector:
+#     app: {{ include "conductor.name" . }}
+#     component: elasticsearch
+#   ports:
+#   - protocol: TCP
+#     port: 9200
+#     targetPort: 9200
+
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: esdata-conductor-pvc
+# spec:
+#   accessModes:
+#   - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: {{ .Values.elasticsearch.storage }}

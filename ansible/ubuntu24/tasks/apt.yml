@@ -25,6 +25,7 @@
       - pcscd
       - libfuse2t64
         #- conky-all
+      - traceroute
     state: present
   become: yes
 

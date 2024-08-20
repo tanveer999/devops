@@ -3,12 +3,25 @@ namespace: conductor
 conductorServer:
   replicaCount: 1
   image:
-    repository:
-    tag:
-  configProp: config-redis.properties
+    repository: conductor 
+    tag: server
+  serverPort: 8080
+  serverNodePort: 30080
+  uiPort: 5000
+  uiNodePort: 30050 
 
 redis:
   replicaCount: 1
   image:
     repository: redis
     tag: 6.2.3-alpine
+  port: 6379
+  nodePort: 30079
+
+elasticsearch:
+  replicaCount: 1
+  image:
+    repository: docker.elastic.co/elasticsearch/elasticsearch
+    tag: 7.17.11
+  javaOpts: "-Xms512m -Xmx1024m"
+  storage: 1Gi
