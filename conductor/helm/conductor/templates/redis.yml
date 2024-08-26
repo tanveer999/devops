@@ -4,17 +4,17 @@ metadata:
   name: {{ include "conductor.fullName" . }}-redis
   namespace: {{ .Values.namespace }}
   labels:
-    app: {{ include "conductor.name" . }}
+    # app: {{ include "conductor.name" . }}
 spec:
   replicas: {{ .Values.redis.replicaCount }}
   selector:
     matchLabels:
-      app: {{ include "conductor.name" . }}
+      # app: {{ include "conductor.name" . }}
       component: redis
   template:
     metadata:
       labels:
-        app: {{ include "conductor.name" . }}
+        # app: {{ include "conductor.name" . }}
         component: redis
     spec:
       containers:
@@ -49,7 +49,7 @@ metadata:
 spec:
   type: NodePort
   selector:
-    app: {{ include "conductor.name" . }}
+    # app: {{ include "conductor.name" . }}
     component: redis
   ports:
     - protocol: TCP

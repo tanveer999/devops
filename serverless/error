@@ -1,0 +1,14 @@
+Change Set did not reach desired state, retrying
+Executing created change set
+  UPDATE_IN_PROGRESS - AWS::CloudFormation::Stack - python-http-api-dev
+  UPDATE_IN_PROGRESS - AWS::Lambda::Function - TestLambdaFunction
+  UPDATE_FAILED - AWS::Lambda::Function - TestLambdaFunction
+  UPDATE_ROLLBACK_IN_PROGRESS - AWS::CloudFormation::Stack - python-http-api-dev
+  UPDATE_IN_PROGRESS - AWS::Lambda::Function - TestLambdaFunction
+  UPDATE_FAILED - AWS::Lambda::Function - TestLambdaFunction
+  UPDATE_ROLLBACK_FAILED - AWS::CloudFormation::Stack - python-http-api-dev
+
+⠏ Updating CloudFormation stack (0/7) (821s)
+
+
+1. what to do in above scenario? stuck at UPDATE_ROLLBACK_FAILED

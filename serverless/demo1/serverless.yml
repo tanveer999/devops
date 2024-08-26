@@ -1,0 +1,13 @@
+org: tanveer999
+app: demo1
+service: demo1
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: python3.8
+
+functions:
+  hello:
+    handler: handler.hello

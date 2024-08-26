@@ -1,0 +1,20 @@
+service: python-http-api
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: python3.8
+
+# plugins:
+#   - serverless-enable-api-logs
+
+functions:
+  test:
+    handler: handler.test
+    events:
+      - httpApi:
+          path: /
+          method: get
+      - httpApi:
+          path: /test
+          method: get

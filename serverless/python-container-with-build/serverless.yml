@@ -1,0 +1,39 @@
+service: lambda-container-service
+
+provider:
+  name: aws
+  runtime: python3.9
+  region: ap-south-1
+  memorySize: 128
+  deploymentBucket:
+    name: ${env:AWS_DEPLOYMENT_S3}
+  role: ${env:AWS_LAMBDA_ROLE}
+  # vpc:
+  #   securityGroupIds:
+  #     - ${env:AWS_SG1}
+  #   subnetIds:
+  #     - ${env:AWS_SUBNET1}
+  # rest api config
+  ecr:
+    scanOnPush: false
+    images:
+      # lambdaimage2:
+        # path: .
+        # file: Dockerfile
+        # uri: 270009541057.dkr.ecr.ap-south-1.amazonaws.com/demo:dev1
+      lambdaimage1:
+        path: .
+        file: Dockerfile
+
+functions:
+  # lambdaContainer:
+  #   name: lambda-container-${opt:stage}
+  #   image:
+  #     uri: ${env:AWS_ACCOUNT_ID}.dkr.ecr.ap-south-1.amazonaws.com/lambda-container:latest
+      # skipCacheInvalidation: true
+  # lambda-container-2:
+  #   name: lambda-container-2-${opt:stage}
+  #   image: lambdaimage2
+  lambda-container-1:
+    name: lambda-container-1-${opt:stage}
+    image: lambdaimage1

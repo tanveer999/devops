@@ -1,0 +1,71 @@
+service: python-private-rest-api
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: python3.8
+  region: ap-south-1
+  memorySize: 128
+  deploymentBucket:
+    name: ${env:AWS_DEPLOYMENT_S3}
+  vpc:
+    securityGroupIds:
+      - ${env:AWS_SG1}
+    subnetIds:
+      - ${env:AWS_SUBNET1}
+  # rest api config
+  endpointType: PRIVATE
+  vpcEndpointIds:
+    - ${env:AWS_VPCE_ID}
+  apiGateway:
+    resourcePolicy:
+      - Effect: Allow
+        Principal: '*'
+        Action: execute-api:Invoke
+        Resource:
+          - execute-api:/*/*/*
+      - Effect: Deny
+        Principal: '*'
+        Action: execute-api:Invoke
+        Resource: 
+          - execute-api:/*/*/*
+        Condition:
+          StringNotEquals:
+            aws:SourceVpc:
+              - ${env:AWS_VPC_1}
+                #   - ${env:AWS_VPC_2}
+
+# package:
+#   # exclude deprecated
+#   patterns:
+#     - handler.py
+#     - requirements.txt
+
+functions:
+  hello:
+    # vpc:
+    #   subnetIds:
+    #     - ${env:AWS_SUBNET1}
+    #   securityGroupIds:
+    #     - ${env:AWS_SG1}
+    handler: handler.hello
+    events:
+      - http:
+          path: /hello
+          method: get
+  
+  # dummyGet:
+    # vpc:
+    #   subnetIds:
+    #     - ${env:AWS_SUBNET1}
+    #   securityGroupIds:
+    #     - ${env:AWS_SG1}
+    # handler: handler.get_dummy_data
+    # events:
+    #   - http:
+    #       path: /test
+    #       method: get
+
+plugins:
+  - serverless-python-requirements

@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "serverless-enable-api-logs": "^2.0.0"
+  }
+}

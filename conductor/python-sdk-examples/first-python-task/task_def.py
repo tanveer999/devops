@@ -2,11 +2,12 @@ from conductor.client.configuration.configuration import Configuration
 from conductor.client.http.models import TaskDef
 from conductor.client.orkes_clients import OrkesClients
 
-def main():
-    api_config = Configuration()
-    clients = OrkesClients(configuration=api_config)
-    metadata_client = clients.get_metadata_client()
+def greet_task_def(client):
+    # api_config = Configuration()
+    # clients = OrkesClients(configuration=api_config)
+    # metadata_client = clients.get_metadata_client()
 
+    metadata_client = client
     task_def = TaskDef()
 
     task_def.name = 'greet'
@@ -35,7 +36,7 @@ def main():
 
     metadata_client.register_task_def(task_def=task_def)
 
-    print(f'registered the task -- see the details {api_config.ui_host}/taskDef/{task_def.name}')
+    # print(f'registered the task -- see the details {api_config.ui_host}/taskDef/{task_def.name}')
 
 if __name__ == '__main__':
-    main()
+    greet_task_def()

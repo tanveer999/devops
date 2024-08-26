@@ -1,0 +1,63 @@
+service: python-websocket # replace by your app name
+
+frameworkVersion: '3'
+
+# package:
+#   excludeDevDependencies: false
+# custom:
+#   pythonRequirements:
+#     noDeploy: [] # do not ignore botocore
+provider:
+  name: aws
+  region: ap-south-1 # replace by the region you want to deploy to
+  memorySize: 128
+  runtime: python3.8
+  deploymentBucket:
+<<<<<<< HEAD
+    name: ${env:AWS_DEPLOYMENT_S3}
+  vpc:
+    securityGroupIds:
+      - ${env:AWS_SG1}
+    subnetIds:
+      - ${env:AWS_SUBNET1}
+=======
+    name: sls-deployment-bucket-9384
+  vpc:
+    securityGroupIds:
+      - sg-006dc972b6e36e581
+    subnetIds:
+      - subnet-058db9d186f0250a4
+>>>>>>> f73790c0a2d56c20e14638ccd32c57feb1e43ae7
+  # websocketsApiName: ${self:service}-${opt:stage}-websocketApi
+  # websocketsApiRouteSelectionExpression: $request.body.action
+# iamRoleStatements:
+#   - Effect: Allow
+#     Action:
+#       - "execute-api:ManageConnections"
+#     Resource:
+#       - "arn:aws:execute-api:*:*:**/@connections/*"
+functions:
+  # allows clients to connect and disconnect
+  connectionManager:
+    handler: functions/websocket.connection_manager
+    events:
+      - websocket:
+          route: $connect
+      - websocket:
+          route: $disconnect
+  # Catch-all route for unsupported actions, like HTML 404 
+  # defaultMessage: 
+  #   handler: functions/websocket.default_message
+  #   events:
+  #     - websocket:
+  #         route: $default
+  # Handle incoming websocket messages
+  # incomingMessage:
+  #   handler: functions/websocket.handle_incoming_ws_message
+  #   events:
+  #     - websocket:
+  #         route: sendMessage
+# environment:
+#   WEBSOCKET_API_ENDPOINT: !Join ['', ['https://', !Ref WebsocketsApi, '.execute-api.', "${self:region}", '.amazonaws.com/', "${opt:stage}/"]]
+plugins:
+  - serverless-python-requirements

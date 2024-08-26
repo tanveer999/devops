@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "conductor.fullName" . }}-greet-worker
+  labels:
+    # app: greet-conductor-worker
+spec:
+  replicas: {{ .Values.greetWorker.replicaCount }}
+  selector:
+    matchLabels:
+      component: greet-conductor-worker
+  template:
+    metadata:
+      labels:
+        component: greet-conductor-worker
+    spec:
+      containers:
+      - name: greet-conductor-worker
+        imagePullPolicy: IfNotPresent
+        image: greet-conductor-worker:latest
+        # resources:
+        #   limits:
+        #     memory: "512Mi"
+        #     cpu: "500m"
+        #   requests:
+        #     memory: "256Mi"
+        #     cpu: "250m"
+        env:
+        - name: API_SERVER_URL
+          value: "http://{{ include "conductor.fullName" . }}-server:8080/api"
+        #   value: {{ .Values.greetWorker.apiServerUrl }}

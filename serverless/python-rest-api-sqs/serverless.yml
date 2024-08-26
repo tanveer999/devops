@@ -1,0 +1,99 @@
+service: python-rest-api-sqs
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: python3.9
+  region: ap-south-1
+  stage: ${opt:stage}
+  memorySize: 128
+  role: ${env:AWS_LAMBDA_ROLE}
+  deploymentBucket:
+    name: ${env:AWS_DEPLOYMENT_S3}
+  # rest api config
+  endpointType: REGIONAL
+  disableRollback: true
+
+functions:
+  # hello:
+    # vpc:
+    #   subnetIds:
+    #     - ${env:AWS_SUBNET1}
+    #   securityGroupIds:
+    #     - ${env:AWS_SG1}
+    # handler: handler.hello
+    # events:
+    #   - http:
+    #       path: /hello
+    #       method: get
+
+  hello_sqs_new:
+    handler: handler.hello
+    events:
+      - sqs:
+          arn: 
+            Fn::GetAtt:
+              - demoQueueNew
+              - Arn
+          maximumConcurrency: 3
+          # arn: !GetAtt ["demoQueue", "Arn"]
+resources:
+  Resources:
+
+    # demoQueueDlq:
+    #   Type: AWS::SQS::Queue
+    #   Properties:
+    #     QueueName: demo_queue_dlq_${opt:stage}
+    #     VisibilityTimeout: 180
+    #     ReceiveMessageWaitTimeSeconds: 20
+
+    demoQueueNew:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: demo_queue_new_${opt:stage}
+        VisibilityTimeout: 180
+        ReceiveMessageWaitTimeSeconds: 20
+        # RedrivePolicy:
+          # deadLetterTargetArn: !GetAtt [ "demoQueueDlq", "Arn" ]
+          # maxReceiveCount: 3
+  
+    # testResource:
+    #   Type: AWS::ApiGateway::Resource
+    #   Properties:
+    #     RestApiId: !Ref ApiGatewayRestApi
+    #     ParentId: !GetAtt ["ApiGatewayRestApi", "RootResourceId"]
+    #     PathPart: test
+    
+    # testResourcePostMethod:
+    #   Type: AWS::ApiGateway::Method
+    #   DependsOn: ["testResource", "ApiGatewayRestApi", "demoQueue", "demoQueueDlq"]
+    #   Properties:
+    #     AuthorizationType: NONE
+    #     HttpMethod: POST
+    #     Integration:
+    #       Credentials: arn:aws:iam::${env:AWS_ACCOUNT_ID}:role/apigateway-to-sqs
+    #       IntegrationHttpMethod: POST
+    #       IntegrationResponses:
+    #         - StatusCode: '200'
+    #       PassthroughBehavior: WHEN_NO_MATCH
+    #       RequestParameters:
+    #         integration.request.header.Content-Type: '''application/x-www-form-urlencoded'''
+    #       RequestTemplates:
+    #         application/json: Action=SendMessage&MessageBody=$util.urlEncode($input.body)
+    #       Type: AWS
+          # Uri: arn:aws:apigateway:ap-south-1:sqs:path/270009541057/demo_queue_dev
+        #   Uri: !Join
+        #     - ''
+        #     - - 'arn:aws:apigateway:'
+        #       - !Ref 'AWS::Region'
+        #       - :sqs:path/
+        #       - !Ref 'AWS::AccountId'
+        #       - /
+        #       - !GetAtt ["demoQueue", "QueueName"]
+        # MethodResponses:
+        #   - ResponseModels:
+        #       application/json: Empty
+        #     StatusCode: '200'
+        # ResourceId: !Ref testResource
+        # RestApiId: !Ref ApiGatewayRestApi

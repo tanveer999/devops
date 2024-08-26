@@ -1,0 +1,68 @@
+service: python-rest-api
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: python3.12
+  region: ap-south-1
+  memorySize: 128
+  logRetentionInDays: 1
+  # deploymentMethod: direct
+  deploymentBucket:
+    name: ${env:AWS_DEPLOYMENT_S3}
+  role: ${env:AWS_LAMBDA_ROLE}
+  # vpc:
+  #   securityGroupIds:
+  #     - ${env:AWS_SG1}
+  #   subnetIds:
+  #     - ${env:AWS_SUBNET1}
+  ## rest api config
+  endpointType: REGIONAL
+  tags:
+    env: dev
+    app: demo
+
+# package:
+#   # exclude deprecated
+#   patterns:
+#     - handler.py
+#     - requirements.txt
+
+plugins:
+  - serverless-python-requirements
+  # - serverless-package-python-functions
+
+custom:
+  pkgPyFuncs:
+    buildDir: _build
+
+functions:
+  hello:
+    # vpc:
+    #   subnetIds:
+    #     - ${env:AWS_SUBNET1}
+    #   securityGroupIds:
+    #     - ${env:AWS_SG1}
+    name: demo-hello-world-${opt:stage}
+    handler: handler.hello
+    # package:
+    #   include:
+    #     - hello-function
+    #   artifact: ${self:custom.pkgPyFuncs.buildDir}/demo-hello-world-${opt:stage}
+    events:
+      - http:
+          path: /hello
+          method: get
+  
+  # dummyGet:
+    # vpc:
+    #   subnetIds:
+    #     - ${env:AWS_SUBNET1}
+    #   securityGroupIds:
+    #     - ${env:AWS_SG1}
+    # handler: handler.get_dummy_data
+    # events:
+    #   - http:
+    #       path: /test
+    #       method: get

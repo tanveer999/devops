@@ -1,0 +1,16 @@
+service: python-rest-post-api
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: python3.8
+  region: ap-south-1
+  endpointType: REGIONAL
+functions:
+  hello:
+    handler: handler.hello
+    events:
+      - http:
+          path: /
+          method: post

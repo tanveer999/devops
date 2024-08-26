@@ -4,17 +4,17 @@ metadata:
   name: {{ include "conductor.fullName" . }}-server
   namespace: {{ .Values.namespace }}
   labels:
-    app: {{ include "conductor.name" . }}
+    # app: {{ include "conductor.name" . }}
 spec:
   replicas: {{ .Values.conductorServer.replicaCount }}
   selector:
     matchLabels:
-      app: {{ include "conductor.name" . }}
+      # app: {{ include "conductor.name" . }}
       component: server
   template:
     metadata:
       labels:
-        app: {{ include "conductor.name" . }}
+        # app: {{ include "conductor.name" . }}
         component: server
     spec:
       containers:
@@ -49,7 +49,7 @@ metadata:
 spec:
   type: NodePort
   selector:
-    app: {{ include "conductor.name" . }}
+    # app: {{ include "conductor.name" . }}
     component: server
   ports:
     - protocol: TCP
@@ -69,7 +69,7 @@ metadata:
 spec:
   type: NodePort
   selector:
-    app: {{ include "conductor.name" . }}
+    # app: {{ include "conductor.name" . }}
     component: server
   ports:
     - protocol: TCP
@@ -105,12 +105,12 @@ data:
     conductor.app.systemTaskWorkerThreadCount: "20"
     conductor.app.systemTaskMaxPollCount: "20"
 
-    # Elastic search instance indexing is enabled.
-    conductor.indexing.enabled: "false"
-    # conductor.elasticsearch.url: "http://es:9200"
-    # conductor.elasticsearch.indexName: "conductor"
-    # conductor.elasticsearch.version: "7"
-    # conductor.elasticsearch.clusterHealthColor: "yellow"
+    # # Elastic search instance indexing is enabled.
+    conductor.indexing.enabled: "true"
+    conductor.elasticsearch.url: "http://{{ include "conductor.fullName" . }}-elasticsearch:{{ .Values.elasticsearch.port }}"
+    conductor.elasticsearch.indexName: "conductor"
+    conductor.elasticsearch.version: "7"
+    conductor.elasticsearch.clusterHealthColor: "yellow"
 
     # Additional modules for metrics collection exposed to Prometheus (optional)
     # conductor.metrics-prometheus.enabled: "true"

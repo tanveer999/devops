@@ -25,3 +25,12 @@ elasticsearch:
     tag: 7.17.11
   javaOpts: "-Xms512m -Xmx1024m"
   storage: 1Gi
+  port: 9200
+  nodePort: 30200
+
+greetWorker:
+  replicaCount: 1
+  image:
+    repository: greet-conductor-worker
+    tag: latest
+  # apiServerUrl: http://{{ include "conductor.fullName" . }}-server:8080
