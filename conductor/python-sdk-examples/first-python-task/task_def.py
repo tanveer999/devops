@@ -21,14 +21,14 @@ def greet_task_def(client):
     task_def.concurrent_exec_limit = 3
 
     # timeout the task if not polled within 60 seconds of scheduling
-    task_def.poll_timeout_seconds = 60
+    task_def.poll_timeout_seconds = 300
 
     # timeout the task if the does not complete in 2 minutes
     task_def.timeout_seconds = 120
 
     # for the long running tasks, timeout if the task does not get updated in COMPLETED or IN_PROGRESS status in
     # 60 seconds after the last update
-    task_def.response_timeout_seconds = 60
+    task_def.response_timeout_seconds = 120
 
     # only allow 100 executions in a 10-second window! -- Note, this is complementary to concurrent_exec_limit
     task_def.rate_limit_per_frequency = 100

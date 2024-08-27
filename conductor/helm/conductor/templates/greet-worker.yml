@@ -5,7 +5,7 @@ metadata:
   labels:
     # app: greet-conductor-worker
 spec:
-  replicas: {{ .Values.greetWorker.replicaCount }}
+#   replicas: {{ .Values.greetWorker.replicaCount }}
   selector:
     matchLabels:
       component: greet-conductor-worker
@@ -29,3 +29,25 @@ spec:
         - name: API_SERVER_URL
           value: "http://{{ include "conductor.fullName" . }}-server:8080/api"
         #   value: {{ .Values.greetWorker.apiServerUrl }}
+
+---
+
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: greet-worker-redis-scaler
+  namespace: {{ .Values.namespace }}
+spec:
+  scaleTargetRef:
+    name: {{ include "conductor.fullName" . }}-greet-worker
+  triggers:
+  - type: redis
+    metadata:
+    #   address: localhost:6379
+      host: "{{ include "conductor.fullName" . }}-redis.{{ .Values.namespace }}.svc.cluster.local"
+      port: "{{ .Values.redis.port }}"
+    #   listName: greet_list
+    #   listName: greet_zset
+      listName: "conductor_queues.test.QUEUE.greet.c"
+      listLength: "2"
+      databaseIndex: "0"
