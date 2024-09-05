@@ -1,0 +1,22 @@
+{
+    "name": "wait_testing",
+    "description": "Edit or extend this sample workflow. Set the workflow name to get started",
+    "version": 1,
+    "tasks": [
+      {
+        "name": "wait",
+        "taskReferenceName": "wait",
+        "inputParameters": {
+          "duration": "1m30s"
+      },
+        "type": "WAIT"
+      }
+    ],
+    "inputParameters": [],
+    "schemaVersion": 2,
+    "restartable": true,
+    "workflowStatusListenerEnabled": false,
+    "ownerEmail": "example@email.com",
+    "timeoutPolicy": "ALERT_ONLY",
+    "timeoutSeconds": 0
+  }

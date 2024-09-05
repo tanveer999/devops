@@ -1,7 +1,7 @@
 namespace: conductor
 
 conductorServer:
-  replicaCount: 1
+  replicaCount: 2
   image:
     repository: conductor 
     tag: server
@@ -9,6 +9,8 @@ conductorServer:
   serverNodePort: 30080
   uiPort: 5000
   uiNodePort: 30050 
+  jconsolePort: 9080
+  jconsoleNodePort: 30090
 
 redis:
   replicaCount: 1

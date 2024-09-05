@@ -26,6 +26,7 @@
       - libfuse2t64
         #- conky-all
       - traceroute
+        #- i3
     state: present
   become: yes
 
@@ -40,6 +41,7 @@
       - xsel
       - rclone
       - conky-all
+      - i3
     state: absent
   become: yes
 

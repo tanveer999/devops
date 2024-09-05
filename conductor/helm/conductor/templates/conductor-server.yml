@@ -79,6 +79,25 @@ spec:
       nodePort: {{ .Values.conductorServer.uiNodePort }}
       {{- end }}
 
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: {{ include "conductor.fullName" . }}-jconsole
+#   namespace: {{ .Values.namespace }}
+# spec:
+#   type: NodePort
+#   selector:
+#     # app: {{ include "conductor.name" . }}
+#     component: server
+#   ports:
+#     - protocol: TCP
+#       port: {{ .Values.conductorServer.jconsolePort }}
+#       targetPort: {{ .Values.conductorServer.jconsolePort }}
+#       {{- if .Values.conductorServer.jconsoleNodePort }}
+#       nodePort: {{ .Values.conductorServer.jconsoleNodePort }}
+#       {{- end }}
+
 ---
 
 apiVersion: v1
@@ -111,6 +130,9 @@ data:
     conductor.elasticsearch.indexName: "conductor"
     conductor.elasticsearch.version: "7"
     conductor.elasticsearch.clusterHealthColor: "yellow"
+
+    conductor.metrics-logger.enabled: "true"
+    conductor.metrics-logger.reportPeriodSeconds: "1"
 
     # Additional modules for metrics collection exposed to Prometheus (optional)
     # conductor.metrics-prometheus.enabled: "true"
