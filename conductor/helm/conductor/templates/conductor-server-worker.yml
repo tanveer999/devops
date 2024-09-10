@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "conductor.fullName" . }}-server
+  name: {{ include "conductor.fullName" . }}-server-worker
   namespace: {{ .Values.namespace }}
   labels:
     # app: {{ include "conductor.name" . }}
 spec:
-  replicas: {{ .Values.conductorServer.replicaCount }}
+  replicas: {{ .Values.conductorServerWorker.replicaCount }}
   selector:
     matchLabels:
       # app: {{ include "conductor.name" . }}
-      component: server
+      component: server-worker
   template:
     metadata:
       labels:
         # app: {{ include "conductor.name" . }}
-        component: server
+        component: server-worker
     spec:
       containers:
       - name: conductor-server
@@ -25,7 +25,7 @@ spec:
         - containerPort: 5000
         envFrom:
         - configMapRef:
-            name: {{ include "conductor.fullName" . }}-api
+            name: {{ include "conductor.fullName" . }}-worker
         readinessProbe:
           httpGet:
             path: /health
@@ -41,43 +41,43 @@ spec:
 
 ---
 
-apiVersion: v1
-kind: Service
-metadata:
-  name: {{ include "conductor.fullName" . }}-server
-  namespace: {{ .Values.namespace }}
-spec:
-  type: NodePort
-  selector:
-    # app: {{ include "conductor.name" . }}
-    component: server
-  ports:
-    - protocol: TCP
-      port: {{ .Values.conductorServer.serverPort }}
-      targetPort: {{ .Values.conductorServer.serverPort }}
-      {{- if .Values.conductorServer.serverNodePort }}
-      nodePort: {{ .Values.conductorServer.serverNodePort }}
-      {{- end }}
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: {{ include "conductor.fullName" . }}-server
+#   namespace: {{ .Values.namespace }}
+# spec:
+#   type: NodePort
+#   selector:
+#     # app: {{ include "conductor.name" . }}
+#     component: server-worker
+#   ports:
+#     - protocol: TCP
+#       port: {{ .Values.conductorServer.serverPort }}
+#       targetPort: {{ .Values.conductorServer.serverPort }}
+#       {{- if .Values.conductorServer.serverNodePort }}
+#       nodePort: {{ .Values.conductorServer.serverNodePort }}
+#       {{- end }}
 
 ---
 
-apiVersion: v1
-kind: Service
-metadata:
-  name: {{ include "conductor.fullName" . }}-ui
-  namespace: {{ .Values.namespace }}
-spec:
-  type: NodePort
-  selector:
-    # app: {{ include "conductor.name" . }}
-    component: server
-  ports:
-    - protocol: TCP
-      port: {{ .Values.conductorServer.uiPort }}
-      targetPort: {{ .Values.conductorServer.uiPort }}
-      {{- if .Values.conductorServer.uiNodePort }}
-      nodePort: {{ .Values.conductorServer.uiNodePort }}
-      {{- end }}
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: {{ include "conductor.fullName" . }}-ui
+#   namespace: {{ .Values.namespace }}
+# spec:
+#   type: NodePort
+#   selector:
+#     # app: {{ include "conductor.name" . }}
+#     component: server-worker
+#   ports:
+#     - protocol: TCP
+#       port: {{ .Values.conductorServer.uiPort }}
+#       targetPort: {{ .Values.conductorServer.uiPort }}
+#       {{- if .Values.conductorServer.uiNodePort }}
+#       nodePort: {{ .Values.conductorServer.uiNodePort }}
+#       {{- end }}
 
 # ---
 # apiVersion: v1
@@ -89,7 +89,7 @@ spec:
 #   type: NodePort
 #   selector:
 #     # app: {{ include "conductor.name" . }}
-#     component: server
+#     component: server-worker
 #   ports:
 #     - protocol: TCP
 #       port: {{ .Values.conductorServer.jconsolePort }}
@@ -103,11 +103,11 @@ spec:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "conductor.fullName" . }}-api
+  name: {{ include "conductor.fullName" . }}-worker
   namespace: {{ .Values.namespace }}
 data:
     # disable executing tasks on the conductor server
-    conductor.system-task-workers.enabled: "false"
+    conductor.system-task-workers.enabled: "true"
     # Database persistence type.
     # Below are the properties for redis
     conductor.db.type: "redis_standalone"
