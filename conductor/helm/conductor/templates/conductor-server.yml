@@ -107,7 +107,7 @@ metadata:
   namespace: {{ .Values.namespace }}
 data:
     # disable executing tasks on the conductor server
-    conductor.system-task-workers.enabled: "false"
+    conductor.system-task-workers.enabled: "true"
     # Database persistence type.
     # Below are the properties for redis
     conductor.db.type: "redis_standalone"
@@ -137,8 +137,8 @@ data:
     conductor.metrics-logger.reportPeriodSeconds: "1"
 
     # Additional modules for metrics collection exposed to Prometheus (optional)
-    # conductor.metrics-prometheus.enabled: "true"
-    # management.endpoints.web.exposure.include: "prometheus"
+    conductor.metrics-prometheus.enabled: "true"
+    management.endpoints.web.exposure.include: "prometheus,metrics,health,info"
 
     # Load sample kitchen sink workflow
     # loadSample: "true"

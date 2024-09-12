@@ -13,7 +13,7 @@ conductorServer:
   jconsoleNodePort: 30090
 
 conductorServerWorker:
-  replicaCount: 1
+  replicaCount: 0
 
 redis:
   replicaCount: 1

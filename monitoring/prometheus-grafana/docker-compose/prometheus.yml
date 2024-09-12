@@ -46,3 +46,10 @@ scrape_configs:
     static_configs:
       - targets:
           - 192.168.56.10:9121
+
+  - job_name: "conductor"
+    scrape_interval: 5s
+    metrics_path: /actuator/prometheus
+    static_configs:
+      - targets:
+          - localhost:8081
