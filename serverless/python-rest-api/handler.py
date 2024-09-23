@@ -1,15 +1,16 @@
 import json
 # import requests
 import sys
+import os
 
 def hello(event, context):
     # body = {
     #     "message": "Go Serverless v3.0! Your function executed successfully!",
     #     "input": event,
     # }
-    sys.exit(1)
+    
     body = {
-        "message": "Go Serverless v3.0! Your function executed successfully!"
+        "message": f"stage is : {os.getenv('STAGE')}"
     }
 
     return {"statusCode": 200, "body": json.dumps(body)}

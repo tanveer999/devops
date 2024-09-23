@@ -5,6 +5,7 @@ frameworkVersion: '3'
 provider:
   name: aws
   runtime: python3.12
+  stage: ${opt:stage}
   region: ap-south-1
   memorySize: 128
   logRetentionInDays: 1
@@ -19,9 +20,23 @@ provider:
   #     - ${env:AWS_SUBNET1}
   ## rest api config
   endpointType: REGIONAL
+  apiGateway:
+    restApiId: koawji0dhl
+    # restApiRootResourceId: aww97mq4ub
+    restApiRootResourceId: aww97mq4ub
+    ## restApiResources: below works similar to restApiRootResourceId:
+    ## 1st service has path /path2
+    ## 2nd service has path /path2/v1 (this path is unique to 2nd service)
+    ## if we deploy 2nd service without below restApiResources: then we get error that /path2 exists
+    restApiResources:
+    #   path1: uq6sba
+      path2: 0wf702
+      path2/v1: 1t8fxc
   tags:
     env: dev
     app: demo
+  environment:
+    STAGE: ${opt:stage}
 
 # package:
 #   # exclude deprecated
@@ -52,9 +67,24 @@ functions:
     #   artifact: ${self:custom.pkgPyFuncs.buildDir}/demo-hello-world-${opt:stage}
     events:
       - http:
-          path: /hello
+          path: path2/v1/u1
           method: get
-  
+  # hello2:
+  #   # vpc:
+  #   #   subnetIds:
+  #   #     - ${env:AWS_SUBNET1}
+  #   #   securityGroupIds:
+  #   #     - ${env:AWS_SG1}
+  #   name: demo-hello-world-v2-${opt:stage}
+  #   handler: handler.hello
+  #   # package:
+  #   #   include:
+  #   #     - hello-function
+  #   #   artifact: ${self:custom.pkgPyFuncs.buildDir}/demo-hello-world-${opt:stage}
+  #   events:
+  #     - http:
+  #         path: /path2
+  #         method: get
   # dummyGet:
     # vpc:
     #   subnetIds:
@@ -66,3 +96,19 @@ functions:
     #   - http:
     #       path: /test
     #       method: get
+
+# resources:
+#   Outputs:
+#     ApiGatewayRestApiId:
+#       Value: ${self:provider.apiGateway.restApiId}
+
+#   # Ensure the resources are only created if they don't already exist
+#   Resources:
+#     ApiGatewayResource:
+#       Type: "AWS::ApiGateway::Resource"
+#       # DependsOn: 
+#       #   - ApiGatewayRestApi  # Prevents conflicts
+#       Properties:
+#         ParentId: ${self:provider.apiGateway.restApiRootResourceId}
+#         PathPart: "path2"
+#         RestApiId: ${self:provider.apiGateway.restApiId}
