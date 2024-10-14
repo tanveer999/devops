@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: conductor-postgres-postgres-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: conductor-postgres
+  template:
+    metadata:
+      labels:
+        app: conductor-postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              value: "conductor"
+            - name: POSTGRES_PASSWORD
+              value: "conductor"
+        #   volumeMounts:
+        #     - name: pgdata-conductor
+        #       mountPath: /var/lib/postgresql/data
+          livenessProbe:
+            exec:
+              command:
+                - "bash"
+                - "-c"
+                - "cat < /dev/null > /dev/tcp/localhost/5432"
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 5
+            failureThreshold: 12
+    #   volumes:
+    #     - name: pgdata-conductor
+    #       persistentVolumeClaim:
+    #         claimName: pgdata-conductor-pvc
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: conductor-postgres-postgres-svc
+spec:
+  selector:
+    app: conductor-postgres
+  ports:
+    - protocol: TCP
+      port: 5432  # Target port on the container
+      targetPort: 5432
+      nodePort: 30432  # External access to the pod
+  type: NodePort  # Can be changed to ClusterIP for internal use or LoadBalancer for external access

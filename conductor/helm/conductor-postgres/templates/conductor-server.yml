@@ -1,0 +1,125 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "conductor.fullName" . }}-server
+  labels:
+    # app: {{ include "conductor.name" . }}
+spec:
+  replicas: {{ .Values.conductorServer.replicaCount }}
+  selector:
+    matchLabels:
+      # app: {{ include "conductor.name" . }}
+      component: server
+  template:
+    metadata:
+      labels:
+        # app: {{ include "conductor.name" . }}
+        component: server
+    spec:
+      containers:
+      - name: conductor-server
+        image: "{{ .Values.conductorServer.image.repository }}:{{ .Values.conductorServer.image.tag }}"
+        ports:
+        - containerPort: 8080
+        - containerPort: 5000
+        envFrom:
+        - configMapRef:
+            name: {{ include "conductor.fullName" . }}-api
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 60
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 60
+          periodSeconds: 60
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "conductor.fullName" . }}-server
+spec:
+  type: NodePort
+  selector:
+    # app: {{ include "conductor.name" . }}
+    component: server
+  ports:
+    - protocol: TCP
+      port: {{ .Values.conductorServer.serverPort }}
+      targetPort: {{ .Values.conductorServer.serverPort }}
+      {{- if .Values.conductorServer.serverNodePort }}
+      nodePort: {{ .Values.conductorServer.serverNodePort }}
+      {{- end }}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "conductor.fullName" . }}-ui
+spec:
+  type: NodePort
+  selector:
+    # app: {{ include "conductor.name" . }}
+    component: server
+  ports:
+    - protocol: TCP
+      port: {{ .Values.conductorServer.uiPort }}
+      targetPort: {{ .Values.conductorServer.uiPort }}
+      {{- if .Values.conductorServer.uiNodePort }}
+      nodePort: {{ .Values.conductorServer.uiNodePort }}
+      {{- end }}
+
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: {{ include "conductor.fullName" . }}-jconsole
+# spec:
+#   type: NodePort
+#   selector:
+#     # app: {{ include "conductor.name" . }}
+#     component: server
+#   ports:
+#     - protocol: TCP
+#       port: {{ .Values.conductorServer.jconsolePort }}
+#       targetPort: {{ .Values.conductorServer.jconsolePort }}
+#       {{- if .Values.conductorServer.jconsoleNodePort }}
+#       nodePort: {{ .Values.conductorServer.jconsoleNodePort }}
+#       {{- end }}
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "conductor.fullName" . }}-api
+data:
+  conductor.db.type: "postgres"
+  conductor.queue.type: "postgres"
+  conductor.external-payload-storage.type: "postgres"
+
+  # Database connectivity
+  spring.datasource.url: "jdbc:postgresql://conductor-postgres-postgres-svc:5432/postgres"
+  spring.datasource.username: "conductor"
+  spring.datasource.password: "conductor"
+
+
+  # Indexing Properties
+  conductor.indexing.enabled: "true"
+  conductor.indexing.type: "postgres"
+  # Required to disable connecting to elasticsearch.
+  conductor.elasticsearch.version: "0"
+
+  # Additional modules for metrics collection exposed to Prometheus (optional)
+  conductor.metrics-prometheus.enabled: "true"
+  management.endpoints.web.exposure.include: "prometheus"
+
+  # Load sample kitchen-sink workflow
+  loadSample: "true"

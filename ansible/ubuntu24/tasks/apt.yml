@@ -14,18 +14,19 @@
   ansible.builtin.apt:
     name: 
       - tree
-      - "gir1.2-gtop-2.0"
-      - "gir1.2-clutter-1.0"
+      - tmux
+      # - "gir1.2-gtop-2.0"
+      # - "gir1.2-clutter-1.0"
       - stow
         #- rclone
       - xclip
       - bat
-      - vagrant
-      - flameshot
-      - pcscd
-      - libfuse2t64
+      # - vagrant
+      # - flameshot
+      # - pcscd
+      # - libfuse2t64
         #- conky-all
-      - traceroute
+      # - traceroute
       #- ifstat
         #- i3
     state: present
@@ -34,29 +35,29 @@
     #- name: "rclone version"
     #command: rclone --version
 
-- name: "Removing apt packages"
-  apt:
-    name:
-      - sysfsutils
-      - syncthing
-      - xsel
-      - rclone
-      - conky-all
-      - i3
-      - ifstat
-    state: absent
-  become: yes
+# - name: "Removing apt packages"
+#   apt:
+#     name:
+#       - sysfsutils
+#       - syncthing
+#       - xsel
+#       - rclone
+#       - conky-all
+#       - i3
+#       - ifstat
+#     state: absent
+#   become: yes
 
 #    - name: "Install bitwarden"
 #      apt:
 #        deb: "https://vault.bitwarden.com/download/?app=desktop&platform=linux&variant=deb"
 #      become: yes
 
-- name: "check virtualbox installation"
-  command: vboxmanage --version
+# - name: "check virtualbox installation"
+#   command: vboxmanage --version
 
-- name: "check vagrant installation"
-  command: vagrant --version
+# - name: "check vagrant installation"
+#   command: vagrant --version
 
 #- name: "Install amdgpu"
 #  apt:
