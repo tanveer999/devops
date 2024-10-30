@@ -26,6 +26,15 @@
   tags:
     - flatpak
 
+- name: "Install okular"
+  community.general.flatpak:
+    name: org.kde.okular
+    remote: flathub
+    state: present
+  become: yes
+  tags:
+    - flatpak
+
 - name: "Install GIMP"
   community.general.flatpak:
     name: org.gimp.GIMP
