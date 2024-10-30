@@ -9,33 +9,14 @@ conductorServer:
   serverNodePort: 30080
   uiPort: 5000
   uiNodePort: 30050 
-  jconsolePort: 9080
-  jconsoleNodePort: 30090
+  
+  conifg:
+    spring.datasource.url: "jdbc:postgresql://{{ include 'conductor.fullName' . }}-postgres:5432/postgres"
 
-conductorServerWorker:
-  replicaCount: 0
-
-redis:
+postgres:
   replicaCount: 1
   image:
-    repository: redis
-    tag: 6.2.3-alpine
-  port: 6379
-  nodePort: 30079
-
-elasticsearch:
-  replicaCount: 1
-  image:
-    repository: docker.elastic.co/elasticsearch/elasticsearch
-    tag: 7.17.11
-  javaOpts: "-Xms512m -Xmx1024m"
-  storage: 1Gi
-  port: 9200
-  nodePort: 30200
-
-greetWorker:
-  replicaCount: 1
-  image:
-    repository: greet-conductor-worker
-    tag: latest
-  # apiServerUrl: http://{{ include "conductor.fullName" . }}-server:8080
+    repository: postgres
+    # tag: 6.2.3-alpine
+  port: 5432
+  nodePort: 30432

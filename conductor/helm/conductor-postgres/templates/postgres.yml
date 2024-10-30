@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: conductor-postgres-postgres-deploy
+  name: {{ include "conductor.fullName" . }}-postgres
 spec:
-  replicas: 1
+  replicas: {{ .Values.postgres.replicaCount }}
   selector:
     matchLabels:
       app: conductor-postgres
@@ -14,9 +14,9 @@ spec:
     spec:
       containers:
         - name: postgres
-          image: postgres
+          image: {{ .Values.postgres.image.repository }}
           ports:
-            - containerPort: 5432
+            - containerPort: {{ .Values.postgres.port }}
           env:
             - name: POSTGRES_USER
               value: "conductor"
@@ -45,13 +45,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: conductor-postgres-postgres-svc
+  name: {{ include "conductor.fullName" . }}-postgres
 spec:
   selector:
     app: conductor-postgres
   ports:
     - protocol: TCP
-      port: 5432  # Target port on the container
-      targetPort: 5432
-      nodePort: 30432  # External access to the pod
+      port: {{ .Values.postgres.port }}  # Target port on the container
+      targetPort: {{ .Values.postgres.port }}
+      nodePort: {{ .Values.postgres.nodePort }}  # External access to the pod
   type: NodePort  # Can be changed to ClusterIP for internal use or LoadBalancer for external access
