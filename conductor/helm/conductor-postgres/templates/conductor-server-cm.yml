@@ -3,25 +3,16 @@ kind: ConfigMap
 metadata:
   name: {{ include "conductor.fullName" . }}-api
 data:
-  {{- /* nindent -> add specified number of newline and then indent */}}
-  {{ tpl (toYaml .Values.conductorServer.config) . | nindent 2 }}
-  
-  {{- /* DB */}}
-  conductor.db.type: "postgres"
-  conductor.queue.type: "postgres"
-  conductor.external-payload-storage.type: "postgres"
+{{/* Data from values.yml 
+  {{- tpl (toYaml .Values.conductorServer.config) . | nindent 2 }}
 
-  {{- /* DB Connectivity */}}
-  spring.datasource.username: "conductor"
-  spring.datasource.password: "conductor"
+  {{- range $key, $value := .Values.conductorServer.data }}
+  {{ $key }}: {{ tpl $value $ | quote | indent 2 }}
+  {{- end }}
 
+*/}}
 
-  {{- /* Indexing Properties */}}
-  conductor.indexing.enabled: "true"
-  conductor.indexing.type: "postgres"
-  {{- /* Required to disable connecting to elasticsearch. */}}
-  conductor.elasticsearch.version: "0"
-
-  {{- /* Additional modules for metrics collection exposed to Prometheus (optional) */}}
-  conductor.metrics-prometheus.enabled: "true"
-  management.endpoints.web.exposure.include: "prometheus"
+  {{/* $ in tpl context points to root, but . will point within loop */}}
+  {{- range $key, $value := .Values.conductorServer.config }}
+  {{ $key }}: {{ tpl ( toString $value) $ | quote }}
+  {{- end }}

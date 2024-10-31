@@ -9,9 +9,33 @@ conductorServer:
   serverNodePort: 30080
   uiPort: 5000
   uiNodePort: 30050 
-  
-  conifg:
-    spring.datasource.url: "jdbc:postgresql://{{ include 'conductor.fullName' . }}-postgres:5432/postgres"
+
+
+  data:
+    three: 3
+    two: "2"
+    one: "1"
+
+  config:
+    # {{- /* DB */}}
+    conductor.db.type: "postgres"
+    conductor.queue.type: "postgres"
+    # conductor.external-payload-storage.type: "postgres"
+    spring.datasource.url: "jdbc:postgresql://{{ include \"conductor.fullName\" . }}-postgres:5432/postgres"
+
+    # {{- /* DB Connectivity */}}
+    spring.datasource.username: "conductor"
+    spring.datasource.password: "conductor"
+
+    # {{- /* Indexing Properties */}}
+    conductor.indexing.enabled: true
+    conductor.indexing.type: "postgres"
+    # {{- /* Required to disable connecting to elasticsearch. */}}
+    conductor.elasticsearch.version: 0
+
+    # {{- /* Additional modules for metrics collection exposed to Prometheus (optional) */}}
+    conductor.metrics-prometheus.enabled: "true"
+    management.endpoints.web.exposure.include: "prometheus"
 
 postgres:
   replicaCount: 1
