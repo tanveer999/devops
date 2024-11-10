@@ -1,0 +1,57 @@
+service: python-rest-api-v2
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: python3.10
+  stage: ${opt:stage}
+  region: ap-south-1
+  memorySize: 128
+  logRetentionInDays: 1
+  # deploymentMethod: direct
+  deploymentBucket:
+    name: ${env:AWS_DEPLOYMENT_S3}
+  role: ${env:AWS_LAMBDA_ROLE}
+  ## rest api config
+  endpointType: REGIONAL
+  tags:
+    env: dev
+    app: demo
+  environment:
+    STAGE: ${opt:stage}
+
+plugins:
+  - serverless-python-requirements
+  # - serverless-package-python-functions
+
+custom:
+  pkgPyFuncs:
+    buildDir: _build
+
+functions:
+  hello:
+    # vpc:
+    #   subnetIds:
+    #     - ${env:AWS_SUBNET1}
+    #   securityGroupIds:
+    #     - ${env:AWS_SG1}
+    name: demo-hello-world-${opt:stage}
+    handler: handler.hello
+    # package:
+    #   include:
+    #     - hello-function
+    #   artifact: ${self:custom.pkgPyFuncs.buildDir}/demo-hello-world-${opt:stage}
+    events:
+      - s3:
+          bucket: ${env:AWS_DEPLOYMENT_S3}
+          event: s3:ObjectCreated:*
+          rules:
+            - prefix: uploads/
+            - suffix: .jpg
+          existing: true
+
+  ## deploying below function after removing iam:CreateRole, iam:TagRole, iam:PutRolePolicy and it works
+  hello1:
+    name: demo-hello-world-v2-${opt:stage}
+    handler: handler.hello

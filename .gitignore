@@ -49,3 +49,5 @@ _meta
 # set environment variables
 set-env.sh
 _build
+
+temp.json
