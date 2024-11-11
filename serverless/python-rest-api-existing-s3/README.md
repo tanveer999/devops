@@ -28,6 +28,24 @@ dev-python-rest-api-v2-custom-resources-lambda:
 }
 ```
 
+## Permissions required during deployment
+
+```
+{
+    "Sid": "Statement2",
+    "Effect": "Allow",
+    "Action": [
+        "iam:CreateRole",
+        "iam:TagRole",
+        "iam:PutRolePolicy"
+    ],
+    "Resource": [
+        "arn:aws:iam::xxxx:role/*python-rest-api-v2*",
+        "arn:aws:iam::xxxx:policy/*python-rest-api-v2*"
+    ]
+}
+```
+
 ---
 <!--
 title: 'AWS Python Example'
