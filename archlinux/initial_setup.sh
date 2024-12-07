@@ -5,7 +5,7 @@ set -x
 echo "Installing required packages........"
 
 sudo pacman -Sy
-sudo pacman -Sy flatpak fastfetch firefox less git code docker minikube ntfs-3g tmux stow fzf
+sudo pacman -Sy --noconfirm flatpak fastfetch firefox less git code docker minikube ntfs-3g tmux stow fzf tree
 
 echo "Installing flatpaks............."
 flatpak install --noninteractive -y flathub org.kde.okular
