@@ -14,7 +14,7 @@ flatpak install --noninteractive -y flathub com.brave.Browser
 
 echo "Configuring git........"
 git config --global user.name "Tanveer Ahmed"
-git config --global user.email "tanveerahmed2619@gmail.com"
+git config --global user.email "tanveer@test.com"
 
 echo "Starting services......"
 sudo systemctl enable bluetooth
