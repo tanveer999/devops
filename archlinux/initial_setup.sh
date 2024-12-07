@@ -1,9 +1,10 @@
 #!/bin/bash
 set -x
 
-FONT_DIR="~/.local/share/fonts"
+FONT_DIR="$HOME/.local/share/fonts"
+TMP_DIR="$HOME/tmp"
 
-mkdir -p ~/tmp
+mkdir -p TMP_DIR
 
 echo "Installing required packages........"
 
@@ -24,6 +25,7 @@ sudo systemctl enable bluetooth
 
 echo "starship setup ........."
 mkdir -p $FONT_DIR
-curl -L https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/CodeNewRoman.zip -o ~/tmp/codenewroman.zip
-unzip ~/tmp/codenewroman.zip -d $FONT_DIR
+curl -L https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/CodeNewRoman.zip -o $TMP_DIR/codenewroman.zip
+unzip $TMP_DIR/codenewroman.zip -d $FONT_DIR
+rm $TMP_DIR/codenewroman.zip
 curl -sS https://starship.rs/install.sh | sh
