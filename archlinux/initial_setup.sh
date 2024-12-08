@@ -11,6 +11,9 @@ echo "Installing required packages........"
 sudo pacman -Sy
 sudo pacman -Sy --noconfirm flatpak fastfetch firefox less git code docker minikube ntfs-3g tmux stow fzf tree unzip okular obsidian xclip
 
+echo "Configure yay ......"
+sudo pacman -S --needed git base-devel && git clone https://aur.archlinux.org/yay-bin.git && cd yay-bin && makepkg -si
+
 echo "Installing flatpaks............."
 flatpak install --noninteractive -y flathub org.kde.okular
 flatpak install --noninteractive -y flathub md.obsidian.Obsidian
@@ -30,6 +33,11 @@ unzip $TMP_DIR/codenewroman.zip -d $FONT_DIR
 rm $TMP_DIR/codenewroman.zip
 curl -sS https://starship.rs/install.sh | sh
 
-echo "Condiguring tmux"
+echo "Configuring tmux.........."
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 tmux source ~/.tmux.conf
+
+echo "Aur packages"
+yay -S blesh
+yay -S visual-studio-code-bin
+# ysy -S google-chrome
