@@ -4,12 +4,12 @@ set -x
 FONT_DIR="$HOME/.local/share/fonts"
 TMP_DIR="$HOME/tmp"
 
-mkdir -p TMP_DIR
+mkdir -p $TMP_DIR
 
 echo "Installing required packages........"
 
 sudo pacman -Sy
-sudo pacman -Sy --noconfirm flatpak fastfetch firefox less git code docker minikube ntfs-3g tmux stow fzf tree unzip
+sudo pacman -Sy --noconfirm flatpak fastfetch firefox less git code docker minikube ntfs-3g tmux stow fzf tree unzip okular obsidian xclip
 
 echo "Installing flatpaks............."
 flatpak install --noninteractive -y flathub org.kde.okular
@@ -29,3 +29,7 @@ curl -L https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/CodeNew
 unzip $TMP_DIR/codenewroman.zip -d $FONT_DIR
 rm $TMP_DIR/codenewroman.zip
 curl -sS https://starship.rs/install.sh | sh
+
+echo "Condiguring tmux"
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+tmux source ~/.tmux.conf
