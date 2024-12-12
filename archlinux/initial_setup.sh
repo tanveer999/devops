@@ -9,7 +9,7 @@ mkdir -p $TMP_DIR
 echo "Installing required packages........"
 
 sudo pacman -Sy
-sudo pacman -Sy --noconfirm flatpak fastfetch firefox less git code docker minikube ntfs-3g tmux stow fzf tree unzip okular obsidian xclip
+sudo pacman -Sy --noconfirm flatpak fastfetch firefox less git code docker minikube ntfs-3g tmux stow tree unzip okular obsidian xclip
 
 echo "Configure yay ......"
 sudo pacman -S --needed git base-devel && git clone https://aur.archlinux.org/yay-bin.git && cd yay-bin && makepkg -si
@@ -38,6 +38,10 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 tmux source ~/.tmux.conf
 
 echo "Aur packages"
-yay -S blesh
+# yay -S blesh
 yay -S visual-studio-code-bin
 # ysy -S google-chrome
+
+echo "Configuring fzf .........."
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+~/.fzf/install
