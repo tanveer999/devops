@@ -9,7 +9,7 @@ mkdir -p $TMP_DIR
 echo "Installing required packages........"
 
 sudo pacman -Sy
-sudo pacman -Sy --noconfirm flatpak fastfetch firefox less git code docker minikube ntfs-3g tmux stow tree unzip okular obsidian xclip
+sudo pacman -Sy --noconfirm flatpak fastfetch firefox less git code docker minikube ntfs-3g tmux stow tree unzip okular obsidian xclip zsh
 
 echo "Configure yay ......"
 sudo pacman -S --needed git base-devel && git clone https://aur.archlinux.org/yay-bin.git && cd yay-bin && makepkg -si
