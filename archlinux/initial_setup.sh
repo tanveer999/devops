@@ -40,6 +40,7 @@ tmux source ~/.tmux.conf
 echo "Aur packages"
 # yay -S blesh
 yay -S visual-studio-code-bin
+yay -S oh-my-posh
 # ysy -S google-chrome
 
 echo "Configuring fzf .........."
