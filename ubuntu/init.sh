@@ -14,3 +14,9 @@ curl -s https://ohmyposh.dev/install.sh | bash -s
 
 # vlc
 sudo snap install vlc
+
+# git
+echo "Configuring git........"
+git config --global user.name "Tanveer Ahmed"
+git config --global user.email "tanveer@test.com"
+
