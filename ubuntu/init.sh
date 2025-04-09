@@ -4,7 +4,8 @@ sudo apt update -y
 sudo apt upgrade -y
 sudo apt install -y build-essential
 
-sudo apt install -y tmux xclip curl alacritty neovim ntfs-3g git stow zsh gnome-shell-extension-manager nvtop transmission python3-venv python3-pip ripgrep fd-find
+sudo add-apt-repository ppa:zhangsongcui3371/fastfetch
+sudo apt install -y tmux xclip curl alacritty neovim ntfs-3g git stow zsh gnome-shell-extension-manager nvtop transmission python3-venv python3-pip ripgrep fd-find fastfetch
 
 # tmux plugin
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm

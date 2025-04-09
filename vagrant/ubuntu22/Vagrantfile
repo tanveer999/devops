@@ -12,10 +12,10 @@ Vagrant.configure("2") do |config|
     vb.name = "vm1"
   end
 
-  config.vm.provision "file", source: "~/.ssh/vagrant-key.pub", destination: "~/.ssh/vagrant-key.pub"
+  config.vm.provision "file", source: "~/.ssh/github.pub", destination: "~/.ssh/github.pub"
 
   config.vm.provision "shell", inline: <<-EOF
-    cat /home/vagrant/.ssh/vagrant-key.pub >> /home/vagrant/.ssh/authorized_keys
+    cat /home/vagrant/.ssh/github.pub >> /home/vagrant/.ssh/authorized_keys
   EOF
 
 end
