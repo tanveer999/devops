@@ -49,10 +49,12 @@ def get_latest_records() -> str:
             span.set_attribute("db.collection", "dice_rolls")
             span.set_attribute("db.operation", "find")
             span.set_attribute("records.count", len(records))
-
+            # Manually raising an exception for demonstration
+            raise ValueError("This is a manually raised exception for demonstration purposes")
             return jsonify({"records": records})
         
         except Exception as e:
+            span.set_status(trace.Status(trace.StatusCode.ERROR))
             span.record_exception(e)
             logger.error(f"Error fetching records: {e}")
             return jsonify({"error": "Failed to fetch records"}), 500 

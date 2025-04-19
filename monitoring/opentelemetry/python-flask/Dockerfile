@@ -6,9 +6,6 @@ WORKDIR /app
 COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Install OpenTelemetry instrumentation
-RUN pip install opentelemetry-instrumentation-flask opentelemetry-exporter-otlp
-
 # Copy application code
 COPY . /app
 
