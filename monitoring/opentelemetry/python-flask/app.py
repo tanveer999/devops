@@ -1,6 +1,7 @@
 from random import randint
 from flask import Flask, request, jsonify
 import logging
+from pymongo import MongoClient
 
 from opentelemetry import trace
 
@@ -13,6 +14,11 @@ app = Flask(__name__)
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
+
+# Configure mongo client
+mongo_client = MongoClient("mongodb://mongo:27017/")
+db = mongo_client["dice_db"]
+collection = db["dice_rolls"]
 
 @app.route("/rolldice", methods=["GET"])
 def roll_dice() -> str:
@@ -30,6 +36,26 @@ def roll_dice() -> str:
 
     return jsonify({"player": player or "Anonymous", "result": result})
 
+
+@app.route("/latest-records", methods=["GET"])
+def get_latest_records() -> str:
+    """
+    Endpoint to fetch latest 10 records from the database.
+    """
+
+    with tracer.start_as_current_span("get_latest_records") as span:
+        try:
+            records = list(collection.find().sort("_id", -1).limit(10))
+            span.set_attribute("db.collection", "dice_rolls")
+            span.set_attribute("db.operation", "find")
+            span.set_attribute("records.count", len(records))
+
+            return jsonify({"records": records})
+        
+        except Exception as e:
+            span.record_exception(e)
+            logger.error(f"Error fetching records: {e}")
+            return jsonify({"error": "Failed to fetch records"}), 500 
 
 def roll() -> int:
     """

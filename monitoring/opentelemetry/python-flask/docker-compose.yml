@@ -28,3 +28,14 @@ services:
       - "4318:4318"   # OTLP HTTP
       - "5778:5778"   # Configuration service
       - "9411:9411"   # Zipkin compatibility
+
+  mongo:
+    image: mongo:8.0
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
