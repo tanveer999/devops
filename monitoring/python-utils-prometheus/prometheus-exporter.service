@@ -1,0 +1,26 @@
+[Unit]
+Description=Custom Prometheus Metrics Exporter
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+User=tanveer
+Group=tanveer
+WorkingDirectory=/home/tanveer/repo/devops/monitoring/python-utils-prometheus
+Environment=PATH=/home/tanveer/dependencies/python3/opentelemetry/bin
+ExecStart=/home/tanveer/dependencies/python3/opentelemetry/bin/python stable_main.py
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=prometheus-exporter
+
+# Security settings
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/tmp
+
+[Install]
+WantedBy=multi-user.target
